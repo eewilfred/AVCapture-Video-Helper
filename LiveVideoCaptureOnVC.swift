@@ -40,9 +40,10 @@ extension LiveVideoCaptureOnVC {
         if Bundle.main.infoDictionary?["NSCameraUsageDescription"] == nil {
             fatalError(infoPlistEntryNotMade)
         }
-
-        initializeVideoCapture(cameraPostion)
-        showCameraFeed()
+        DispatchQueue.global().async { [weak self] in
+            self?.initializeVideoCapture(cameraPostion)
+            self?.showCameraFeed()
+        }
     }
 
     /// To stop video session, must be called when view disappeared or video not needed
@@ -64,17 +65,22 @@ extension LiveVideoCaptureOnVC {
             }
         }
     }
+
+    /// Call this methode to start video playback on your screen
+    public func showCameraFeed() {
+
+        videoPreviewLayer.videoGravity = .resizeAspectFill
+        DispatchQueue.main.async { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.view.layer.addSublayer(strongSelf.videoPreviewLayer)
+            strongSelf.videoPreviewLayer.frame = strongSelf.view.frame
+        }
+    }
 }
 
 //MARK: Private API
 
 extension LiveVideoCaptureOnVC {
-
-    private func showCameraFeed() {
-        videoPreviewLayer.videoGravity = .resizeAspectFill
-        view.layer.addSublayer(videoPreviewLayer)
-        videoPreviewLayer.frame = view.frame
-    }
     
     fileprivate func initializeVideoCapture(_ cameraPostion: AVCaptureDevice.Position) {
 

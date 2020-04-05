@@ -40,8 +40,10 @@ extension LiveVideoCapture {
             fatalError(infoPlistEntryNotMade)
         }
 
-        initializeVideoCapture(cameraPostion)
-        showCameraFeed()
+        DispatchQueue.global().async { [weak self] in
+            self?.initializeVideoCapture(cameraPostion)
+            self?.showCameraFeed()
+        }
     }
 
     /// To stop video session, must be called when view disappeared or video not needed
@@ -58,9 +60,20 @@ extension LiveVideoCapture {
     public func startSession() {
 
         if !captureSession.isRunning {
-            DispatchQueue.global().async {
-                self.captureSession.startRunning()
+            DispatchQueue.global().async { [weak self] in
+                self?.captureSession.startRunning()
             }
+        }
+    }
+
+    /// To start video playback on the screen
+    public func showCameraFeed() {
+
+        videoPreviewLayer.videoGravity = .resizeAspectFill
+         DispatchQueue.main.async { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.layer.addSublayer(strongSelf.videoPreviewLayer)
+            strongSelf.videoPreviewLayer.frame = strongSelf.frame
         }
     }
 }
@@ -68,12 +81,6 @@ extension LiveVideoCapture {
 //MARK: Private API
 
 extension LiveVideoCapture {
-
-    private func showCameraFeed() {
-        videoPreviewLayer.videoGravity = .resizeAspectFill
-        layer.addSublayer(videoPreviewLayer)
-        videoPreviewLayer.frame = frame
-    }
 
     fileprivate func initializeVideoCapture(_ cameraPostion: AVCaptureDevice.Position) {
 
