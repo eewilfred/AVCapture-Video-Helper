@@ -1,4 +1,4 @@
-# Easy Live Video
+# AVCapture Video Helper
 
 Protocol-based easy setup for enabling live video from camera on your view or view controller
 
