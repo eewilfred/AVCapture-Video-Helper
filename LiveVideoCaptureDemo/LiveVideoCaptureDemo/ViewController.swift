@@ -25,6 +25,7 @@ class ViewController: UIViewController, LiveVideoCaptureOnVC {
         super.viewWillDisappear(animated)
         stopSession()
     }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         startSession()
