@@ -5,7 +5,7 @@
       location = "group:LiveVideoCapture.swift">
    </FileRef>
    <FileRef
-      location = "group:/Users/ewilson/Documents/Trial Projects/LiveVideoCapture/LiveVideoCaptureOnVC.swift">
+      location = "group:LiveVideoCaptureOnVC.swift">
    </FileRef>
    <FileRef
       location = "group:LiveVideoCaptureDemo/LiveVideoCaptureDemo.xcodeproj">
