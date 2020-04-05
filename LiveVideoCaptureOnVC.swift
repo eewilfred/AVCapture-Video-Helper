@@ -32,7 +32,9 @@ protocol LiveVideoCaptureOnVC: AVCaptureVideoDataOutputSampleBufferDelegate wher
 
 extension LiveVideoCaptureOnVC {
 
-    /// To start playBack Call this Function
+    /// To prepare for video playback
+    /// - Parameter cameraPostion: camera you want to use to capture, Default is .unspecified (back camera if both are avilable)
+    ///  - Note: This is a mandatory fuction, if this is not called playback will not work
     public func prepareForVideoCapture(cameraPostion: AVCaptureDevice.Position = .unspecified) {
 
         if Bundle.main.infoDictionary?["NSCameraUsageDescription"] == nil {
@@ -53,7 +55,7 @@ extension LiveVideoCaptureOnVC {
         }
     }
 
-    /// To start a video playback , call this when ever you need to start / restart video
+    /// To start session for video playback , call this when ever you need to start / restart video
     public func startSession() {
 
         if !captureSession.isRunning {
@@ -82,6 +84,7 @@ extension LiveVideoCaptureOnVC {
     }
 
     private func addCameraInput(_ cameraPostion: AVCaptureDevice.Position) {
+
         guard let device = AVCaptureDevice.DiscoverySession(
             deviceTypes: [.builtInWideAngleCamera, .builtInDualCamera, .builtInTrueDepthCamera],
             mediaType: .video,
@@ -93,6 +96,7 @@ extension LiveVideoCaptureOnVC {
     }
 
     private func getCameraFrames() {
+
         videoDataOutput.videoSettings = [(kCVPixelBufferPixelFormatTypeKey as NSString) : NSNumber(value: kCVPixelFormatType_32BGRA)] as [String : Any]
         videoDataOutput.alwaysDiscardsLateVideoFrames = true
         videoDataOutput.setSampleBufferDelegate(
