@@ -1,16 +1,15 @@
 # AVCapture Video Helper
 
-Protocol-based easy setup for enabling live video from camera on your view or view controller
+Protocol-based easy setup for enabling live video from camera on your view
 
 ## Usage:
 
-**on your View Controller:**
 
 Step 1:
- Confirm your view controller to `LiveVideoCaptureOnVC`
+ Confirm your view / view controller to `LiveVideoCapture`
  
 ```swift
-class ViewController: UIViewController, LiveVideoCaptureOnVC {}
+class ViewController: UIViewController, LiveVideoCapture {}
 ```
 
 Step 2: 
@@ -20,11 +19,11 @@ step 3:
 add intilizers (if you dont need custom intilizer use the example code)
 
 ```swift
-class VideoView: UIView, LiveVideoCaptureOnVC {
+class ViewController: UIViewController, LiveVideoCapture {
     
-    var captureSession: AVCaptureSession = AVCaptureSession()
-    lazy var videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-    var videoDataOutput = AVCaptureVideoDataOutput()
+    var captureSession: AVCaptureSession?
+    var videoPreviewLayer: AVCaptureVideoPreviewLayer?
+    var videoDataOutput: AVCaptureVideoDataOutput?
 
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {}
 }
@@ -35,8 +34,9 @@ in the view didload or the place were you are plannig to start video playback ca
 
 ```swift
     override func viewDidLoad() {
+    
         super.viewDidLoad()
-        prepareForVideoCapture()
+        prepareForVideoCapture(on: view)
     }
 ```
 
@@ -46,6 +46,7 @@ call `stopSession()`
 
 ```swift
     override func viewWillDisappear(_ animated: Bool) {
+    
         super.viewWillDisappear(animated)
         stopSession()
     }
@@ -65,24 +66,4 @@ call `startSession()`
 
 **On your View**
 
-Step 1:
-Conform your view to `LiveVideoCapture`
-```swift
-class VideoView: UIView, LiveVideoCapture {}
-```
-*follow step 2 and 3 as for view controller*
-
-step 4:
-place were you are plannig to start video playback call `prepareForVideoCapture()`
-
-```swift
-override init(frame: CGRect) {
-        super.init(frame: frame)
-        ///Use Front came
-        prepareForVideoCapture(cameraPostion: .front)
-    }
-```
-
-------------
-
-For detailed information refer to the sample application.
+For detailed information on how to add prototcol on view follow sample application `VideoView.swift`
