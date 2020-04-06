@@ -1,6 +1,6 @@
 # AVCapture Video Helper
 
-Protocol-based easy setup for enabling live video from camera on your view
+Protocol-based easy setup for enabling preview of live video from camera on your view, that cna be used for recording or processing
 
 ## Usage:
 
