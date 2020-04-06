@@ -14,11 +14,11 @@ fileprivate let infoPlistEntryNotMade = """
 
 //MARK:- UIView based VideoCapture protocol
 
-protocol LiveVideoCapture: AVCaptureVideoDataOutputSampleBufferDelegate where Self: UIView  {
+protocol LiveVideoCapture: AVCaptureVideoDataOutputSampleBufferDelegate  {
 
-    var captureSession: AVCaptureSession {get set}
-    var videoPreviewLayer: AVCaptureVideoPreviewLayer {get set}
-    var videoDataOutput: AVCaptureVideoDataOutput {get set}
+    var captureSession: AVCaptureSession? {get set}
+    var videoPreviewLayer: AVCaptureVideoPreviewLayer? {get set}
+    var videoDataOutput: AVCaptureVideoDataOutput? {get set}
 
     /// Must implement this on VC / View to avoid crash as per Apple docs
     func captureOutput(
@@ -34,7 +34,7 @@ extension LiveVideoCapture {
     /// To prepare for video playback
     /// - Parameter cameraPostion: camera you want to use to capture, Default is .unspecified (back camera if both are avilable)
     ///  - Note: This is a mandatory fuction, if this is not called playback will not work
-    public func prepareForVideoCapture(cameraPostion: AVCaptureDevice.Position = .unspecified) {
+    public func prepareForVideoCapture(on view: UIView?, cameraPostion: AVCaptureDevice.Position = .unspecified) {
 
         if Bundle.main.infoDictionary?["NSCameraUsageDescription"] == nil {
             fatalError(infoPlistEntryNotMade)
@@ -42,16 +42,16 @@ extension LiveVideoCapture {
 
         DispatchQueue.global().async { [weak self] in
             self?.initializeVideoCapture(cameraPostion)
-            self?.showCameraFeed()
+            self?.showCameraFeed(on: view)
         }
     }
 
     /// To stop video session, must be called when view disappeared or video not needed
     public func stopSession() {
 
-        if captureSession.isRunning {
+        if captureSession?.isRunning ?? false {
             DispatchQueue.global().async {
-                self.captureSession.stopRunning()
+                self.captureSession?.stopRunning()
             }
         }
     }
@@ -59,21 +59,25 @@ extension LiveVideoCapture {
     /// To start a video session for playback , call this when ever you need to start / restart video
     public func startSession() {
 
-        if !captureSession.isRunning {
+        if !(captureSession?.isRunning ?? true) {
             DispatchQueue.global().async { [weak self] in
-                self?.captureSession.startRunning()
+                self?.captureSession?.startRunning()
             }
         }
     }
 
     /// To start video playback on the screen
-    public func showCameraFeed() {
+    public func showCameraFeed(on view: UIView?) {
 
-        videoPreviewLayer.videoGravity = .resizeAspectFill
+        guard let previewView = view,
+        let previewLayer = videoPreviewLayer else {
+            return
+        }
+
          DispatchQueue.main.async { [weak self] in
             guard let strongSelf = self else { return }
-            strongSelf.layer.addSublayer(strongSelf.videoPreviewLayer)
-            strongSelf.videoPreviewLayer.frame = strongSelf.frame
+            previewView.layer.addSublayer(previewLayer)
+            strongSelf.videoPreviewLayer?.frame = previewView.frame
         }
     }
 }
@@ -83,6 +87,11 @@ extension LiveVideoCapture {
 extension LiveVideoCapture {
 
     fileprivate func initializeVideoCapture(_ cameraPostion: AVCaptureDevice.Position) {
+
+        captureSession = AVCaptureSession()
+        videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession!)
+        videoDataOutput = AVCaptureVideoDataOutput()
+        videoPreviewLayer?.videoGravity = .resizeAspectFill
 
         addCameraInput(cameraPostion)
         getCameraFrames()
@@ -98,21 +107,19 @@ extension LiveVideoCapture {
                 fatalError("No supported camera Found")
         }
         let cameraInput = try! AVCaptureDeviceInput(device: device)
-        captureSession.addInput(cameraInput)
+        captureSession?.addInput(cameraInput)
     }
 
     private func getCameraFrames() {
 
-        videoDataOutput.videoSettings = [(kCVPixelBufferPixelFormatTypeKey as NSString) : NSNumber(value: kCVPixelFormatType_32BGRA)] as [String : Any]
-        videoDataOutput.alwaysDiscardsLateVideoFrames = true
-        videoDataOutput.setSampleBufferDelegate(
+        videoDataOutput?.videoSettings = [(kCVPixelBufferPixelFormatTypeKey as NSString) : NSNumber(value: kCVPixelFormatType_32BGRA)] as [String : Any]
+        videoDataOutput?.alwaysDiscardsLateVideoFrames = true
+        videoDataOutput?.setSampleBufferDelegate(
             self,
             queue: DispatchQueue(label: "live_Video_Preview")
         )
-        captureSession.addOutput(videoDataOutput)
-
-        guard let connection = videoDataOutput.connection(with: AVMediaType.video),
-            connection.isVideoOrientationSupported else { return }
-        connection.videoOrientation = .portrait
+        if let outPut = videoDataOutput {
+            captureSession?.addOutput(outPut)
+        }
     }
 }

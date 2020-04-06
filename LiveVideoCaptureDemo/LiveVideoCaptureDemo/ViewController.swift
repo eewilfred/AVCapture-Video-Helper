@@ -10,15 +10,15 @@
 import UIKit
 import AVFoundation
 
-class ViewController: UIViewController, LiveVideoCaptureOnVC {
+class ViewController: UIViewController, LiveVideoCapture {
 
-    var captureSession: AVCaptureSession = AVCaptureSession()
-    lazy var videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-    var videoDataOutput = AVCaptureVideoDataOutput()
+    var captureSession: AVCaptureSession?
+    var videoPreviewLayer: AVCaptureVideoPreviewLayer?
+    var videoDataOutput: AVCaptureVideoDataOutput?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        prepareForVideoCapture()
+        prepareForVideoCapture(on: view)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

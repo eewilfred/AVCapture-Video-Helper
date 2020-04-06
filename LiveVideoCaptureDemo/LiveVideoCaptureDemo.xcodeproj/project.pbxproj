@@ -16,7 +16,6 @@
 		1D397DAA2439C4CC00E38E1D /* LiveVideoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D397DA92439C4CC00E38E1D /* LiveVideoCapture.swift */; };
 		1D397DAC2439D69D00E38E1D /* VideoOnViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D397DAB2439D69D00E38E1D /* VideoOnViewViewController.swift */; };
 		1D397DAE2439D6C400E38E1D /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D397DAD2439D6C400E38E1D /* VideoView.swift */; };
-		1D397DB02439D99600E38E1D /* LiveVideoCaptureOnVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D397DAF2439D99600E38E1D /* LiveVideoCaptureOnVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,7 +30,6 @@
 		1D397DA92439C4CC00E38E1D /* LiveVideoCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LiveVideoCapture.swift; path = ../LiveVideoCapture.swift; sourceTree = "<group>"; };
 		1D397DAB2439D69D00E38E1D /* VideoOnViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoOnViewViewController.swift; sourceTree = "<group>"; };
 		1D397DAD2439D6C400E38E1D /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
-		1D397DAF2439D99600E38E1D /* LiveVideoCaptureOnVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LiveVideoCaptureOnVC.swift; path = ../LiveVideoCaptureOnVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,7 +46,6 @@
 		1D397D872439C38400E38E1D = {
 			isa = PBXGroup;
 			children = (
-				1D397DAF2439D99600E38E1D /* LiveVideoCaptureOnVC.swift */,
 				1D397DA92439C4CC00E38E1D /* LiveVideoCapture.swift */,
 				1D397D922439C38400E38E1D /* LiveVideoCaptureDemo */,
 				1D397D912439C38400E38E1D /* Products */,
@@ -150,7 +147,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D397DB02439D99600E38E1D /* LiveVideoCaptureOnVC.swift in Sources */,
 				1D397DAA2439C4CC00E38E1D /* LiveVideoCapture.swift in Sources */,
 				1D397D982439C38400E38E1D /* ViewController.swift in Sources */,
 				1D397D942439C38400E38E1D /* AppDelegate.swift in Sources */,

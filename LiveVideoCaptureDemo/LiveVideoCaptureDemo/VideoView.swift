@@ -10,17 +10,16 @@ import UIKit
 import AVFoundation
 
 class VideoView: UIView, LiveVideoCapture {
-    
-    var captureSession: AVCaptureSession = AVCaptureSession()
-    lazy var videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-    var videoDataOutput = AVCaptureVideoDataOutput()
+    var videoPreviewLayer: AVCaptureVideoPreviewLayer?
+    var videoDataOutput: AVCaptureVideoDataOutput?
+    var captureSession: AVCaptureSession?
 
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {}
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         ///Use Front came
-        prepareForVideoCapture(cameraPostion: .front)
+        prepareForVideoCapture(on: self, cameraPostion: .front)
     }
 
     required init?(coder: NSCoder) {

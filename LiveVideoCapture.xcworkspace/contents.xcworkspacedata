@@ -5,9 +5,6 @@
       location = "group:LiveVideoCapture.swift">
    </FileRef>
    <FileRef
-      location = "group:LiveVideoCaptureOnVC.swift">
-   </FileRef>
-   <FileRef
       location = "group:LiveVideoCaptureDemo/LiveVideoCaptureDemo.xcodeproj">
    </FileRef>
 </Workspace>
